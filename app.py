@@ -13,7 +13,6 @@ db = MySQL(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    print(os.getenv('MYSQL_HOST'))
     def AddCityInDataBase(AddInDataBase):
         Query = "INSERT INTO CityNames (No, Name) VALUES (%s, %s)"
         City = (' ', Temporary)
@@ -30,8 +29,9 @@ def index():
     cursor = db.connection.cursor()
     cursor.execute(Query)
     WeatherData = []
-
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&appid=880ec9bcda23a277b152cb3f29cf68e1'
+    API_KEY = os.getenv('APIKEY')
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&appid='+API_KEY
+    print(url)
     for NewCity in cursor:
         NewCity = str(NewCity[1])
         result = requests.get(url.format(NewCity)).json()
